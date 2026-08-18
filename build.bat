@@ -6,12 +6,12 @@ REM ============================================================
 
 echo.
 echo == Restaurando pacotes ==
-dotnet restore TheLibrary\TheLibrary.csproj
+dotnet restore TheLibrary.csproj
 if errorlevel 1 goto erro
 
 echo.
 echo == Publicando (self-contained, arquivo unico) ==
-dotnet publish TheLibrary\TheLibrary.csproj ^
+dotnet publish TheLibrary.csproj ^
     -c Release ^
     -r win-x64 ^
     --self-contained true ^
