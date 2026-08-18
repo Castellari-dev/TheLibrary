@@ -1,0 +1,100 @@
+﻿<Window x:Class="TheLibrary.Views.CardEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Editar carta"
+        Height="620" Width="760"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanMinimize"
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="22">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="272" />
+                <ColumnDefinition Width="22" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Border CornerRadius="12" ClipToBounds="True" Background="{DynamicResource SurfaceAlt}"
+                        Height="378">
+                    <Image x:Name="ImgCard" Stretch="Uniform" />
+                </Border>
+                <Button Content="Trocar arte / edição" Margin="0,14,0,0" Click="ChangeArt_Click" />
+                <Button Content="Abrir no Scryfall" Style="{StaticResource LinkButton}"
+                        HorizontalAlignment="Center" Margin="0,12,0,0" Click="OpenScryfall_Click" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <TextBlock x:Name="TxtName" Style="{StaticResource H1}" TextWrapping="Wrap" />
+                <TextBlock x:Name="TxtSet" Style="{StaticResource Muted}" Margin="0,0,0,4" />
+                <TextBlock x:Name="TxtType" Style="{StaticResource Muted}" />
+                <TextBlock x:Name="TxtArtist" Style="{StaticResource Muted}" Margin="0,2,0,0" />
+
+                <Border Style="{StaticResource Card}" Margin="0,16,0,0" Padding="14">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Quantidade" Style="{StaticResource FieldLabel}" />
+                                <TextBox x:Name="TxtQty" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Valor mínimo (USD)" Style="{StaticResource FieldLabel}" />
+                                <TextBox x:Name="TxtMinPrice" />
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock x:Name="TxtMarket" Style="{StaticResource Muted}" Margin="0,8,0,0" FontSize="11" />
+                        <Button Content="Usar o preço atual do Scryfall" Style="{StaticResource LinkButton}"
+                                HorizontalAlignment="Left" Margin="0,6,0,0" Click="UseMarket_Click" />
+
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Estado" Style="{StaticResource FieldLabel}" />
+                                <ComboBox x:Name="CmbCondition" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Idioma" Style="{StaticResource FieldLabel}" />
+                                <TextBox x:Name="TxtLang" IsReadOnly="True" />
+                            </StackPanel>
+                        </Grid>
+
+                        <CheckBox x:Name="ChkFoil" Content="Foil" Margin="0,16,0,0" Click="Foil_Click" />
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="Observações" Style="{StaticResource FieldLabel}" Margin="0,16,0,4" />
+                <TextBox x:Name="TxtNotes" Height="62" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalContentAlignment="Top" Padding="9,7" />
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}"
+                BorderThickness="0,1,0,0" Padding="22,13">
+            <Grid>
+                <Button Content="Excluir carta" Style="{StaticResource DangerButton}" HorizontalAlignment="Left"
+                        Width="130" Click="Delete_Click" x:Name="BtnDelete" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Cancelar" Style="{StaticResource GhostButton}" Width="110" Click="Cancel_Click" />
+                    <Button Content="Salvar" Width="130" Margin="10,0,0,0" Click="Save_Click" IsDefault="True" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
