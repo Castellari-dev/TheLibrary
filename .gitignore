@@ -1,0 +1,60 @@
+# =========================
+# .NET / Build
+# =========================
+[Bb]in/
+[Oo]bj/
+publish/
+
+# =========================
+# Visual Studio
+# =========================
+.vs/
+.vscode/
+
+*.user
+*.suo
+*.userosscache
+*.rsuser
+
+# =========================
+# JetBrains
+# =========================
+.idea/
+
+# =========================
+# NuGet
+# =========================
+packages/
+
+# =========================
+# Logs / Temporary
+# =========================
+*.log
+*.tmp
+*.temp
+
+# =========================
+# Test / Coverage
+# =========================
+TestResults/
+coverage/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Local configuration / secrets
+# =========================
+.env
+.env.*
+appsettings.local.json
+appsettings.*.local.json
+secrets.json
+
+# =========================
+# Publish profiles
+# =========================
+Properties/PublishProfiles/

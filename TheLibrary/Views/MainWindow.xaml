@@ -1,0 +1,427 @@
+﻿<Window x:Class="TheLibrary.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="The Library"
+        Height="820" Width="1380"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource Accent}" Padding="20,12">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="The Library" FontSize="18" FontWeight="Bold"
+                               Foreground="{DynamicResource AccentText}" />
+                    <TextBlock x:Name="TxtDbBadge" Foreground="{DynamicResource AccentText}" Opacity="0.85"
+                               Margin="14,0,0,0" FontSize="12" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock x:Name="TxtUserBadge" Foreground="{DynamicResource AccentText}"
+                               VerticalAlignment="Center" Margin="0,0,14,0" FontSize="12" />
+                    <Button Content="Sair" Style="{StaticResource GhostButton}" Width="80" Height="28"
+                            Foreground="{DynamicResource AccentText}" BorderBrush="{DynamicResource AccentText}"
+                            Click="Logout_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" x:Name="Tabs">
+
+            <TabItem Header="Coleção">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtFilter" Grid.Column="0" TextChanged="TxtFilter_TextChanged" />
+                        <Button Grid.Column="1" Content="Editar" Style="{StaticResource GhostButton}"
+                                Width="90" Margin="10,0,0,0" Click="EditCard_Click" />
+                        <Button Grid.Column="2" Content="Trocar arte" Style="{StaticResource GhostButton}"
+                                Width="110" Margin="8,0,0,0" Click="SwapArt_Click" />
+                        <Button Grid.Column="3" Content="Excluir" Style="{StaticResource GhostButton}"
+                                Width="90" Margin="8,0,0,0" Click="DeleteCard_Click" />
+                        <Button Grid.Column="4" Content="Atualizar preços" Width="150" Margin="8,0,0,0"
+                                Click="RefreshPrices_Click" />
+                    </Grid>
+
+                    <DataGrid x:Name="GridCards" Grid.Row="1" Grid.Column="0" IsReadOnly="True"
+                              SelectionChanged="GridCards_SelectionChanged"
+                              MouseDoubleClick="GridCards_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Carta" Binding="{Binding DisplayName}" Width="2*" />
+                            <DataGridTextColumn Header="Edição" Binding="{Binding SetDisplay}" Width="80" />
+                            <DataGridTextColumn Header="#" Binding="{Binding CollectorNumber}" Width="60" />
+                            <DataGridTextColumn Header="Idioma" Binding="{Binding Lang}" Width="65" />
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Condition}" Width="65" />
+                            <DataGridTextColumn Header="Foil" Binding="{Binding FoilDisplay}" Width="50" />
+                            <DataGridTextColumn Header="Qtd" Binding="{Binding Quantity}" Width="55" />
+                            <DataGridTextColumn Header="Mín. US$" Binding="{Binding MinPriceUsd, StringFormat=N2}" Width="85" />
+                            <DataGridTextColumn Header="Scryfall US$" Binding="{Binding MarketPriceUsd, StringFormat=N2}" Width="95" />
+                            <DataGridTextColumn Header="Total US$" Binding="{Binding TotalMinUsd, StringFormat=N2}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource Card}" Padding="14">
+                        <StackPanel>
+                            <Border CornerRadius="10" ClipToBounds="True" Background="{DynamicResource SurfaceAlt}"
+                                    Height="378">
+                                <Image x:Name="ImgPreview" Stretch="Uniform" />
+                            </Border>
+                            <TextBlock x:Name="TxtPreviewName" Style="{StaticResource H2}" Margin="0,14,0,4"
+                                       TextWrapping="Wrap" />
+                            <TextBlock x:Name="TxtPreviewSet" Style="{StaticResource Muted}" FontSize="12" />
+                            <TextBlock x:Name="TxtPreviewType" Style="{StaticResource Muted}" FontSize="12" Margin="0,4,0,0" />
+                            <TextBlock x:Name="TxtPreviewArtist" Style="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0" />
+                            <TextBlock x:Name="TxtPreviewPrices" Margin="0,12,0,0" FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Adicionar carta">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtAddSearch" Grid.Column="0" KeyDown="TxtAddSearch_KeyDown" />
+                        <Button Grid.Column="1" Content="Buscar no Scryfall" Width="170" Margin="10,0,0,0"
+                                Click="AddSearch_Click" />
+                        <CheckBox Grid.Column="2" x:Name="ChkAddMultilingual" Content="Outros idiomas"
+                                  Margin="16,0,0,0" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock x:Name="TxtAddInfo" Style="{StaticResource Muted}"
+                                   Text="Digite o nome da carta (em inglês ou português) e pressione Enter." />
+                        <ProgressBar x:Name="AddProgress" Width="150" Margin="14,0,0,0" IsIndeterminate="True"
+                                     Visibility="Collapsed" />
+                    </StackPanel>
+
+                    <ListBox x:Name="LstAddResults" Grid.Row="2" Grid.Column="0" BorderThickness="0"
+                             Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             SelectionChanged="LstAddResults_SelectionChanged"
+                             MouseDoubleClick="LstAddResults_MouseDoubleClick">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Width="180" Margin="6">
+                                    <Border CornerRadius="9" ClipToBounds="True" Background="{DynamicResource SurfaceAlt}">
+                                        <Image Source="{Binding NormalImage}" Width="168" Height="235" Stretch="Uniform" />
+                                    </Border>
+                                    <TextBlock Text="{Binding SetLine}" TextWrapping="Wrap" FontSize="11"
+                                               Margin="2,6,2,0" TextAlignment="Center" />
+                                    <TextBlock Text="{Binding PriceLine}" FontSize="11" Margin="2,3,2,0"
+                                               TextAlignment="Center" Foreground="{DynamicResource TextMuted}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" Style="{StaticResource Card}" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="Adicionar à coleção" Style="{StaticResource H2}" />
+                            <Border CornerRadius="10" ClipToBounds="True" Background="{DynamicResource SurfaceAlt}"
+                                    Height="300">
+                                <Image x:Name="ImgAddPreview" Stretch="Uniform" />
+                            </Border>
+                            <TextBlock x:Name="TxtAddName" Margin="0,12,0,2" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            <TextBlock x:Name="TxtAddSet" Style="{StaticResource Muted}" FontSize="11" />
+
+                            <Grid Margin="0,14,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Qtd" Style="{StaticResource FieldLabel}" />
+                                    <TextBox x:Name="TxtAddQty" Text="1" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Estado" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox x:Name="CmbAddCondition" />
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="Valor mínimo (USD)" Style="{StaticResource FieldLabel}" Margin="0,12,0,4" />
+                            <TextBox x:Name="TxtAddMinPrice" Text="0,00" />
+
+                            <CheckBox x:Name="ChkAddFoil" Content="Foil" Margin="0,14,0,0" Click="AddFoil_Click" />
+
+                            <Button Content="Adicionar" Margin="0,18,0,0" Height="38" Click="AddToCollection_Click" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Importar CSV">
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Selecionar arquivo..." Width="170" Click="PickCsv_Click" />
+                        <Button x:Name="BtnResolve" Content="Resolver artes no Scryfall" Width="220" Margin="10,0,0,0"
+                                Style="{StaticResource GhostButton}" Click="ResolveCsv_Click" IsEnabled="False" />
+                        <Button x:Name="BtnCancelResolve" Content="Cancelar" Width="100" Margin="10,0,0,0"
+                                Style="{StaticResource GhostButton}" Click="CancelResolve_Click" IsEnabled="False" />
+                        <CheckBox x:Name="ChkOverwritePrices" Content="Sempre usar o preço do Scryfall"
+                                  Margin="18,0,0,0" VerticalAlignment="Center" IsChecked="True" />
+                        <CheckBox x:Name="ChkSumQuantities" Content="Somar quantidade se já existir"
+                                  Margin="18,0,0,0" VerticalAlignment="Center" IsChecked="True" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                        <TextBlock x:Name="TxtCsvInfo" Style="{StaticResource Muted}"
+                                   Text="Nenhum arquivo carregado. Formatos aceitos: exportação do LigaMagic e CSVs com colunas equivalentes." />
+                        <ProgressBar x:Name="CsvProgress" Margin="0,8,0,0" Minimum="0" Maximum="100" Value="0" />
+                    </StackPanel>
+
+                    <DataGrid x:Name="GridImport" Grid.Row="2" MouseDoubleClick="GridImport_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header="✓" Binding="{Binding Include, UpdateSourceTrigger=PropertyChanged}" Width="40" />
+                            <DataGridTextColumn Header="Linha" Binding="{Binding LineNumber}" Width="55" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Carta" Binding="{Binding DisplayName}" Width="2*" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Ed." Binding="{Binding SetCode}" Width="60" IsReadOnly="True" />
+                            <DataGridTextColumn Header="#" Binding="{Binding CollectorNumber}" Width="55" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Idioma" Binding="{Binding LangRaw}" Width="60" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Condition}" Width="60" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Foil" Binding="{Binding FoilLabel}" Width="45" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Qtd" Binding="{Binding Quantity, UpdateSourceTrigger=LostFocus}" Width="55" />
+                            <DataGridTextColumn Header="Mín. US$" Binding="{Binding MinPriceUsd, UpdateSourceTrigger=LostFocus}" Width="80" />
+                            <DataGridTextColumn Header="Preço de" Binding="{Binding PriceSource}" Width="110" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Width="150" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Impressão encontrada" Binding="{Binding ResolvedSet}" Width="2*" IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="3" Margin="0,12,0,0">
+                        <TextBlock x:Name="TxtImportSummary" Style="{StaticResource Muted}" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Marcar todos" Style="{StaticResource GhostButton}" Width="120"
+                                    Click="CheckAll_Click" />
+                            <Button Content="Só os resolvidos" Style="{StaticResource GhostButton}" Width="140"
+                                    Margin="8,0,0,0" Click="CheckResolved_Click" />
+                            <Button x:Name="BtnImport" Content="Importar para o banco" Width="190" Margin="10,0,0,0"
+                                    Click="ImportCsv_Click" IsEnabled="False" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Configurações">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Banco de dados" Style="{StaticResource H2}" />
+
+                                    <TextBlock Text="Servidor" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox x:Name="SetCmbProvider" SelectionChanged="SetProvider_Changed">
+                                        <ComboBoxItem Content="Microsoft SQL Server" />
+                                        <ComboBoxItem Content="PostgreSQL" />
+                                    </ComboBox>
+
+                                    <CheckBox x:Name="SetChkRaw" Content="Informar connection string manualmente"
+                                              Margin="0,14,0,0" Checked="SetRaw_Changed" Unchecked="SetRaw_Changed" />
+
+                                    <StackPanel x:Name="SetPnlFields" Margin="0,12,0,0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="110" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Host / instância" Style="{StaticResource FieldLabel}" />
+                                                <TextBox x:Name="SetTxtHost" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Porta" Style="{StaticResource FieldLabel}" />
+                                                <TextBox x:Name="SetTxtPort" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <TextBlock Text="Banco" Style="{StaticResource FieldLabel}" Margin="0,12,0,4" />
+                                        <TextBox x:Name="SetTxtDatabase" />
+
+                                        <CheckBox x:Name="SetChkIntegrated" Content="Autenticação do Windows (SQL Server)"
+                                                  Margin="0,12,0,0" Checked="SetIntegrated_Changed" Unchecked="SetIntegrated_Changed" />
+
+                                        <Grid x:Name="SetPnlCredentials" Margin="0,12,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Usuário do banco" Style="{StaticResource FieldLabel}" />
+                                                <TextBox x:Name="SetTxtDbUser" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Senha do banco" Style="{StaticResource FieldLabel}" />
+                                                <PasswordBox x:Name="SetTxtDbPass" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <CheckBox x:Name="SetChkTrust" Content="Confiar no certificado do servidor"
+                                                  Margin="0,12,0,0" />
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="SetPnlRaw" Margin="0,12,0,0" Visibility="Collapsed">
+                                        <TextBlock Text="Connection string" Style="{StaticResource FieldLabel}" />
+                                        <TextBox x:Name="SetTxtRaw" Height="70" AcceptsReturn="True" TextWrapping="Wrap"
+                                                 VerticalContentAlignment="Top" Padding="9,7" />
+                                    </StackPanel>
+
+                                    <WrapPanel Margin="0,16,0,0">
+                                        <Button Content="Testar conexão" Style="{StaticResource GhostButton}"
+                                                Width="140" Click="SetTest_Click" />
+                                        <Button Content="Criar banco" Style="{StaticResource GhostButton}"
+                                                Width="120" Margin="8,0,0,0" Click="SetCreateDb_Click" />
+                                        <Button Content="Salvar e reconectar" Width="180" Margin="8,0,0,0"
+                                                Click="SetSaveDb_Click" />
+                                    </WrapPanel>
+
+                                    <TextBlock x:Name="SetTxtDbStatus" Style="{StaticResource Muted}" Margin="0,12,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Sobre" Style="{StaticResource H2}" />
+                                    <TextBlock Style="{StaticResource Muted}" TextWrapping="Wrap"
+                                               Text="Dados de cartas e imagens fornecidos pela API pública do Scryfall. Preços são referência de mercado em dólar e não são cotações oficiais." />
+                                    <TextBlock x:Name="SetTxtConfigPath" Style="{StaticResource Muted}"
+                                               FontSize="11" Margin="0,10,0,0" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Aparência" Style="{StaticResource H2}" />
+
+                                    <TextBlock Text="Tema" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox x:Name="SetCmbTheme" SelectionChanged="SetAppearance_Changed" />
+
+                                    <TextBlock Text="Cor de destaque" Style="{StaticResource FieldLabel}" Margin="0,14,0,4" />
+                                    <ComboBox x:Name="SetCmbAccent" SelectionChanged="SetAppearance_Changed">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Ellipse Width="14" Height="14" Fill="{Binding Preview}" />
+                                                    <TextBlock Text="{Binding Name}" Margin="9,0,0,0" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <TextBlock Style="{StaticResource Muted}" FontSize="11" Margin="0,10,0,0"
+                                               Text="A preferência é salva no seu usuário dentro do banco e também localmente." />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Usuários" Style="{StaticResource H2}" />
+                                    <DataGrid x:Name="GridUsers" Height="180" IsReadOnly="True">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Usuário" Binding="{Binding Username}" Width="*" />
+                                            <DataGridTextColumn Header="Admin" Binding="{Binding IsAdmin}" Width="70" />
+                                            <DataGridTextColumn Header="Tema" Binding="{Binding Theme}" Width="80" />
+                                            <DataGridTextColumn Header="Cor" Binding="{Binding Accent}" Width="90" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <TextBlock Text="Novo usuário" Style="{StaticResource FieldLabel}" Margin="0,14,0,4" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="SetTxtNewUser" Grid.Column="0" />
+                                        <PasswordBox x:Name="SetTxtNewPass" Grid.Column="2" />
+                                    </Grid>
+                                    <CheckBox x:Name="SetChkNewAdmin" Content="Administrador" Margin="0,10,0,0" />
+
+                                    <WrapPanel Margin="0,14,0,0">
+                                        <Button Content="Criar usuário" Width="140" Click="CreateUser_Click" />
+                                        <Button Content="Trocar minha senha" Style="{StaticResource GhostButton}"
+                                                Width="170" Margin="8,0,0,0" Click="ChangeMyPassword_Click" />
+                                        <Button Content="Excluir selecionado" Style="{StaticResource DangerButton}"
+                                                Width="170" Margin="8,8,0,0" Click="DeleteUser_Click" />
+                                    </WrapPanel>
+
+                                    <TextBlock x:Name="SetTxtUserStatus" Style="{StaticResource Muted}" Margin="0,12,0,0"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="2" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}"
+                BorderThickness="0,1,0,0" Padding="18,9">
+            <Grid>
+                <TextBlock x:Name="TxtStatus" Style="{StaticResource Muted}" FontSize="12" HorizontalAlignment="Left" />
+                <TextBlock x:Name="TxtTotals" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

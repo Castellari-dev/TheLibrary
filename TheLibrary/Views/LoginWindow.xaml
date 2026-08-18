@@ -1,0 +1,42 @@
+﻿<Window x:Class="TheLibrary.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="The Library — Entrar"
+        Height="430" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{DynamicResource Bg}"
+        Foreground="{DynamicResource Text}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource Accent}" Padding="26,22">
+            <StackPanel>
+                <TextBlock Text="The Library" FontSize="22" FontWeight="Bold"
+                           Foreground="{DynamicResource AccentText}" />
+                <TextBlock x:Name="TxtDbInfo" Foreground="{DynamicResource AccentText}"
+                           Opacity="0.9" Margin="0,3,0,0" FontSize="12" />
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="1" Margin="26,26,26,20">
+            <TextBlock Text="Usuário" Style="{StaticResource FieldLabel}" />
+            <TextBox x:Name="TxtUser" />
+
+            <TextBlock Text="Senha" Style="{StaticResource FieldLabel}" Margin="0,14,0,4" />
+            <PasswordBox x:Name="TxtPass" KeyDown="TxtPass_KeyDown" />
+
+            <TextBlock x:Name="TxtError" Foreground="{DynamicResource Danger}" Margin="0,14,0,0"
+                       TextWrapping="Wrap" />
+
+            <Button Content="Entrar" Margin="0,20,0,0" Height="38" Click="Login_Click" IsDefault="True" />
+
+            <Button Content="Alterar configurações de conexão" Style="{StaticResource LinkButton}"
+                    HorizontalAlignment="Center" Margin="0,18,0,0" Click="Reconfigure_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
